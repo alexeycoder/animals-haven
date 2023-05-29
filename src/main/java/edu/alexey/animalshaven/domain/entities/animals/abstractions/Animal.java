@@ -1,19 +1,19 @@
-package edu.alexey.animalshaven.domain.entities.animals;
+package edu.alexey.animalshaven.domain.entities.animals.abstractions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.alexey.animalshaven.domain.entities.actions.Action;
+import edu.alexey.animalshaven.domain.entities.commands.abstractions.Command;
 
-public class Animal {
+public abstract class Animal {
 
 	private LocalDate birthDate;
 	private String name;
-	private final List<Action> actions;
+	private final List<Command> commands;
 
 	public Animal() {
-		actions = new ArrayList<>();
+		commands = new ArrayList<>();
 	}
 
 	public LocalDate getBirthDate() {
@@ -32,13 +32,8 @@ public class Animal {
 		this.name = name;
 	}
 
-	public List<Action> getActions() {
+	public List<Command> getCommands() {
 		// возвращаем неизменяемый список
-		return actions.stream().toList();
+		return commands.stream().toList();
 	}
-
-	public void learnEat() {
-		
-	}
-
 }
