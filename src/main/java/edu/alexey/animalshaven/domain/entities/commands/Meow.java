@@ -7,12 +7,12 @@ public class Meow extends CommandBase {
 
 	public Meow(Cat cat) {
 		super(() -> {
-			System.out.printf("%s: Гав-гав!\n", cat.getName());
+			System.out.printf("%s: Мрр-мяу!\n", cat.getName());
 		});
 	}
 
 	@Override
 	public final String description() {
-		return "Мяукать (стандартное гавканье)";
+		return "Голос - мяукать";
 	}
 }

@@ -7,6 +7,7 @@ import edu.alexey.animalshaven.client.uielements.Menu;
 import edu.alexey.animalshaven.client.uielements.MenuItem;
 import edu.alexey.animalshaven.client.view.View;
 import edu.alexey.animalshaven.client.viewmodels.ViewModelBase;
+import edu.alexey.animalshaven.domain.business.AnimalsManager;
 
 public class Controller {
 	// inner types
@@ -14,8 +15,8 @@ public class Controller {
 	}
 
 	// fabric
-	public static void createAndRun(Object dataManager, View view) {
-		var controller = new Controller(dataManager, view);
+	public static void createAndRun(AnimalsManager manager, View view) {
+		var controller = new Controller(manager, view);
 		controller.runLifecycle();
 	}
 
@@ -30,7 +31,7 @@ public class Controller {
 	public final Menu MAIN_MENU = new Menu(
 			"Главное меню",
 			Map.of(
-					Set.of("1"), new MenuItem(1, "Список животных", this::dummyHandler),
+					Set.of("1"), new MenuItem(1, "Список животных", this::showAnimals),
 					Set.of("2"), new MenuItem(2, "Информация о животном", this::dummyHandler),
 					Set.of("3"), new MenuItem(3, "Обучить животное", this::dummyHandler),
 					Set.of(" "), new MenuItem(90, null, null),
@@ -38,11 +39,11 @@ public class Controller {
 
 	// fields
 	private final View view;
-	private final Object data;
+	private final AnimalsManager manager;
 
 	// ctor
-	protected Controller(Object dataManager, View view) {
-		this.data = dataManager;
+	protected Controller(AnimalsManager manager, View view) {
+		this.manager = manager;
 		this.view = view;
 	}
 
@@ -105,6 +106,13 @@ public class Controller {
 
 	private ReturnStatus showAnimals(Object nothing) {
 
+		var repo = manager.animalsRepository();
+		var records = repo.getAll();
+		view.show("Список обитателей\n");
+		view.show(ViewModelBase.emptySpace(1));
+		view.show(ViewModelBase.of(records));
+		view.show(SHORT_HR);
+		view.waitToProceed();
 		return new ReturnStatus(false);
 	}
 }
