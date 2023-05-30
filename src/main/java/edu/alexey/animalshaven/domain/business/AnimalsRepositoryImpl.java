@@ -62,7 +62,7 @@ public class AnimalsRepositoryImpl implements Repository<Animal> {
 
 		final String nameLc = nameSample;
 		var foundEntries = getAll().stream()
-		.filter(r -> r.entity().getName().toLowerCase().contains(nameLc)).toList();
+				.filter(r -> r.entity().getName().toLowerCase().contains(nameLc)).toList();
 		return foundEntries;
 	}
 

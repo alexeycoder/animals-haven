@@ -227,7 +227,7 @@ public class ConsoleView implements View {
 			try {
 				LocalDate date = LocalDate.parse(strDate.get());
 				return Optional.of(date);
-				
+
 			} catch (DateTimeParseException e) {
 				printError(ERR_WRONG_DATE_FORMAT);
 			}

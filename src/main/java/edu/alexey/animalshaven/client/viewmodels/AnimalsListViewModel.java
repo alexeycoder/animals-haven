@@ -13,9 +13,6 @@ public class AnimalsListViewModel extends ViewModelBase {
 		StringBuilder sb = new StringBuilder();
 		for (var record : records) {
 			sb.append(new AnimalViewModel(record, simplified)).append(System.lineSeparator());
-			// if (!simplified) {
-			// sb.append(System.lineSeparator());
-			// }
 		}
 		strRepr = sb.toString();
 	}
