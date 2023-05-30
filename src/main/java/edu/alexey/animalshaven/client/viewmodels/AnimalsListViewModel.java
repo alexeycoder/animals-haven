@@ -5,16 +5,17 @@ import java.util.List;
 import edu.alexey.animalshaven.domain.business.RepositoryRecord;
 import edu.alexey.animalshaven.domain.entities.animals.abstractions.Animal;
 
-public class AnimalsViewModel extends ViewModelBase {
+public class AnimalsListViewModel extends ViewModelBase {
 
 	private final String strRepr;
 
-	protected AnimalsViewModel(List<RepositoryRecord<Animal>> records) {
+	protected AnimalsListViewModel(List<RepositoryRecord<Animal>> records, boolean simplified) {
 		StringBuilder sb = new StringBuilder();
 		for (var record : records) {
-			sb.append(new AnimalViewModel(record))
-					.append(System.lineSeparator())
-					.append(System.lineSeparator());
+			sb.append(new AnimalViewModel(record, simplified)).append(System.lineSeparator());
+			// if (!simplified) {
+			// sb.append(System.lineSeparator());
+			// }
 		}
 		strRepr = sb.toString();
 	}

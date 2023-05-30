@@ -30,11 +30,11 @@ public abstract class ViewModelBase {
 		};
 	}
 
-	public static ViewModelBase of(RepositoryRecord<Animal> record) {
-		return new AnimalViewModel(record);
+	public static ViewModelBase of(RepositoryRecord<Animal> record, boolean simplified) {
+		return new AnimalViewModel(record, simplified);
 	}
 
-	public static ViewModelBase of(List<RepositoryRecord<Animal>> records) {
-		return new AnimalsViewModel(records);
+	public static ViewModelBase of(List<RepositoryRecord<Animal>> records, boolean simplified) {
+		return new AnimalsListViewModel(records, simplified);
 	}
 }

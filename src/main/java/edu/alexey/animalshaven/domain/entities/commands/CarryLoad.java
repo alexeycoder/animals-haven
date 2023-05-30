@@ -18,7 +18,7 @@ public class CarryLoad extends CommandBase {
 			}
 		});
 
-		this.description = "Тащить груз " + weight + "кг.";
+		this.description = "Тащить (заряжено груза " + weight + "кг.)";
 	}
 
 	@Override

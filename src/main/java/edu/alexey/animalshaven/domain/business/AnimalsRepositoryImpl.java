@@ -1,5 +1,6 @@
 package edu.alexey.animalshaven.domain.business;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,28 +14,56 @@ import edu.alexey.animalshaven.domain.entities.animals.abstractions.Animal;
 
 public class AnimalsRepositoryImpl implements Repository<Animal> {
 
+	private static final int BASE_ID = 1;
 	private static final ArrayList<Animal> list = new ArrayList<>();
 
-	@Override
-	public RepositoryRecord<Animal> add(Animal entity) {
-		Objects.requireNonNull(entity);
+	private static int toIndex(int id) {
+		return id - BASE_ID;
+	}
 
-		int idx = list.indexOf(entity);
-		if (idx != -1) {
-			return new RepositoryRecord<Animal>(idx, entity);
-		}
+	private static int toId(int index) {
+		return index + BASE_ID;
+	}
 
-		list.add(entity);
-		return new RepositoryRecord<Animal>(list.size() - 1, entity);
+	private int lastId() {
+		return toId(list.size() - 1);
 	}
 
 	@Override
-	public Animal getById(int id) {
-		if (id >= list.size() || id < 0) {
-			return null;
+	public RepositoryRecord<Animal> add(Animal entry) {
+		Objects.requireNonNull(entry);
+
+		int index = list.indexOf(entry);
+		if (index != -1) {
+			return new RepositoryRecord<Animal>(toId(index), entry);
 		}
 
-		return list.get(id);
+		list.add(entry);
+		return new RepositoryRecord<Animal>(lastId(), entry);
+	}
+
+	@Override
+	public RepositoryRecord<Animal> getById(int id) {
+		if (id > lastId() || id < BASE_ID) {
+			return null;
+		}
+		var entry = list.get(toIndex(id));
+		return entry != null ? new RepositoryRecord<Animal>(id, entry) : null;
+	}
+
+	@Override
+	public List<RepositoryRecord<Animal>> getByName(String nameSample) {
+		if (nameSample == null) {
+			throw new NullPointerException("nameSample");
+		}
+		if (nameSample.isBlank()) {
+			throw new InvalidParameterException("nameSample");
+		}
+
+		final String nameLc = nameSample;
+		var foundEntries = getAll().stream()
+		.filter(r -> r.entity().getName().toLowerCase().contains(nameLc)).toList();
+		return foundEntries;
 	}
 
 	@Override
@@ -42,8 +71,8 @@ public class AnimalsRepositoryImpl implements Repository<Animal> {
 		if (list.isEmpty()) {
 			return List.of();
 		}
-		return IntStream.range(0, list.size() - 1)
-				.mapToObj(i -> new RepositoryRecord<Animal>(i, list.get(i))).toList();
+		return IntStream.range(BASE_ID, lastId() + 1)
+				.mapToObj(id -> new RepositoryRecord<Animal>(id, list.get(toIndex(id)))).toList();
 	}
 
 	public static void FillWithData(Repository<Animal> repository) {

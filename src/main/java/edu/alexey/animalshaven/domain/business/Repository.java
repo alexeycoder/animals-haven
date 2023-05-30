@@ -4,9 +4,12 @@ import java.util.List;
 
 public interface Repository<E> {
 
-	RepositoryRecord<E> add(E entity);
+	RepositoryRecord<E> add(E entry);
 
-	E getById(int id);
+	RepositoryRecord<E> getById(int id);
+
+	List<RepositoryRecord<E>> getByName(String nameSample);
 
 	List<RepositoryRecord<E>> getAll();
+
 }

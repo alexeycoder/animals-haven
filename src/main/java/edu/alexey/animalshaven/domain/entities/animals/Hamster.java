@@ -6,7 +6,7 @@ import edu.alexey.animalshaven.domain.entities.animals.abstractions.PetAnimal;
 
 public class Hamster extends PetAnimal {
 
-	protected Hamster(LocalDate birthDate, String name, String owner) {
+	public Hamster(LocalDate birthDate, String name, String owner) {
 		super(birthDate, name, owner);
 	}
 }

@@ -7,7 +7,7 @@ import edu.alexey.animalshaven.domain.entities.commands.Gallop;
 
 public class Horse extends PackAnimal {
 
-	protected Horse(LocalDate birthDate, String name, int loadCapacity) {
+	public Horse(LocalDate birthDate, String name, int loadCapacity) {
 		super(birthDate, name, loadCapacity);
 		
 		this.commands.add(new Gallop(this));

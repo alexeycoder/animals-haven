@@ -9,32 +9,40 @@ public class AnimalViewModel extends ViewModelBase {
 
 	private final String strRepr;
 
-	protected AnimalViewModel(RepositoryRecord<Animal> record) {
+	protected AnimalViewModel(RepositoryRecord<Animal> record, boolean simplified) {
 		var animal = record.entity();
-		var animalKind = AnimalsHelper.getAnimalKind(animal);
-		var animalType = AnimalsHelper.getAnimalType(animal);
-		String idStr = "ID: " + StringUtils.padRight(Integer.toString(record.id()), " ", 3) + " ";
-		String indent = " ".repeat(idStr.length());
-
-		StringBuilder sb = new StringBuilder(idStr)
-				.append(animal.toString())
-				.append(System.lineSeparator()).append(indent)
-				.append(animalKind.description())
-				.append(" (").append(animalType.description()).append(")")
-				.append(System.lineSeparator()).append(indent)
-				.append("Умеет, если попросить:")
-				.append(System.lineSeparator());
-
 		var commands = animal.getCommands();
-		if (commands.isEmpty()) {
-			sb.append(indent)
-					.append("\tничего");
+		String idStr = "ID: " + StringUtils.padRight(Integer.toString(record.id()), " ", 3) + " ";
+
+		var animalKind = AnimalsHelper.getAnimalKind(animal);
+		StringBuilder sb = new StringBuilder(idStr).append(animalKind.description());
+
+		if (simplified) {
+
+			sb.append(", ").append(animal.toString()).append(", Умеет команд: ").append(commands.size());
+
 		} else {
-			commands.forEach(cmd -> {
-				sb.append(indent).append("\t").append(cmd.description())
-						.append(System.lineSeparator());
-			});
+
+			String indent = " ".repeat(idStr.length());
+			var animalType = AnimalsHelper.getAnimalType(animal);
+			sb.append(" (").append(animalType.description()).append(")")
+					.append(System.lineSeparator()).append(indent)
+					.append(animal.toString())
+					.append(System.lineSeparator()).append(indent)
+					.append("Умеет, если попросить:")
+					.append(System.lineSeparator());
+
+			if (commands.isEmpty()) {
+				sb.append(indent)
+						.append("\tничего");
+			} else {
+				commands.forEach(cmd -> {
+					sb.append(indent).append("\t").append(cmd.description())
+							.append(System.lineSeparator());
+				});
+			}
 		}
+
 		strRepr = sb.toString();
 	}
 
