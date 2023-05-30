@@ -9,7 +9,6 @@ public class Horse extends PackAnimal {
 
 	public Horse(LocalDate birthDate, String name, int loadCapacity) {
 		super(birthDate, name, loadCapacity);
-		
 		this.commands.add(new Gallop(this));
 	}
 

@@ -75,12 +75,6 @@ public class AnimalsRepositoryImpl implements Repository<Animal> {
 				.mapToObj(id -> new RepositoryRecord<Animal>(id, list.get(toIndex(id)))).toList();
 	}
 
-	public static void FillWithData(Repository<Animal> repository) {
-
-		repository.add(new Dog(LocalDate.of(2023, 10, 15), "Пёс-Барбос", null));
-		repository.add(new Dog(LocalDate.of(2022, 8, 15), "Сабака-Бабака", null));
-		repository.add(new Cat(LocalDate.of(2022, 9, 2), "Борис", "Виолетта Михайловна"));
-		repository.add(new Mule(LocalDate.of(2023, 5, 20), "Васька", 15));
-	}
+	
 
 }

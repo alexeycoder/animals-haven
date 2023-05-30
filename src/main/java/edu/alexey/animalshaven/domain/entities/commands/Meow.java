@@ -13,6 +13,6 @@ public class Meow extends CommandBase {
 
 	@Override
 	public final String description() {
-		return "Голос - мяукать";
+		return "Голос";
 	}
 }

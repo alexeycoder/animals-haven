@@ -44,21 +44,4 @@ public class AnimalsHelper {
 		// todo: можно добавить логирование отсутствия записи в справочнике
 		return animalKinds.stream().filter(k -> k.cls.isAssignableFrom(animal.getClass())).findAny().get();
 	}
-
-	// public static void main(String[] args) {
-	// Animal an1 = new Dog(LocalDate.of(2023, 10, 15), "Пёс-Барбос", null);
-	// Animal an2 = new Mule(LocalDate.of(2023, 05, 20), "Васька", 15);
-
-	// var at1 = AnimalsHelper.getAnimalType(an1);
-	// var ak1 = AnimalsHelper.getAnimalKind(an1);
-	// System.out.println(at1.toString());
-	// System.out.println(ak1.toString());
-
-	// var at2 = AnimalsHelper.getAnimalType(an2);
-	// var ak2 = AnimalsHelper.getAnimalKind(an2);
-	// System.out.println(at2.toString());
-	// System.out.println(ak2.toString());
-
-	// System.out.println(getClassById(5).getSimpleName());
-	// }
 }

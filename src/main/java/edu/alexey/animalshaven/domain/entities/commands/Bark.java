@@ -13,6 +13,6 @@ public class Bark extends CommandBase {
 
 	@Override
 	public final String description() {
-		return "Голос - гавкать";
+		return "Голос";
 	}
 }

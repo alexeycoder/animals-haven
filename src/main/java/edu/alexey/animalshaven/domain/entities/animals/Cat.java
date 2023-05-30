@@ -9,7 +9,6 @@ public class Cat extends PetAnimal {
 
 	public Cat(LocalDate birthDate, String name, String owner) {
 		super(birthDate, name, owner);
-
 		this.commands.add(new Meow(this));
 	}
 }

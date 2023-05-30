@@ -52,6 +52,7 @@ public class Controller {
 					Set.of("3"), new MenuItem(3, "Информация о животном - поиск по кличке", this::findAnimalsByName),
 					Set.of("4"), new MenuItem(4, "Завести новое животное", this::addAnimalLifecycle),
 					Set.of("5"), new MenuItem(5, "Обучить животное", this::addCommand),
+					Set.of("6"), new MenuItem(6, "Дать команду", this::executeCommand),
 					Set.of(" "), new MenuItem(90, null, null),
 					CMD_EXIT, new MenuItem(99, "Завершить работу", null)));
 
@@ -216,62 +217,29 @@ public class Controller {
 	private ReturnStatus addAnimalLifecycle(Object arg) {
 
 		if (arg instanceof AnimalsHelper.KindRef kindRef) {
-
 			// 3rd LEVEL - create selected animal
-
-			view.clear();
-			view.show("Завести новое животное: " + kindRef.description());
-			view.show(ViewModelBase.emptySpace(1));
-
-			Optional<Animal> animalOpt = createAnimal(kindRef);
-
-			final String somethingWrong = "Что-то пошло не так. Не удалось добавить животное.";
-			if (animalOpt == null) {
-				view.show(somethingWrong);
-			} else if (animalOpt.isEmpty()) {
-				view.show("Добавление отменено.");
-			} else {
-				var repo = manager.animalsRepository();
-				var repoRecord = repo.add(animalOpt.get());
-				if (repoRecord == null) {
-					view.show(somethingWrong);
-				} else {
-					view.show("Успешно добавлено новое животное:");
-					view.show(ViewModelBase.emptySpace(2));
-					view.show(ViewModelBase.of(repoRecord, false));
-				}
-			}
-			view.show(ViewModelBase.emptySpace(1));
-			view.show(SHORT_HR);
-			view.waitToProceed();
-			return new ReturnStatus(false);
+			return addAnimalCreateAndAdd(kindRef);
 		}
 
-		Map<Set<String>, MenuItem> menuItems = new HashMap<>(Map.of(
-				Set.of(" "), new MenuItem(90, null, null),
-				CMD_GO_BACK, new MenuItem(91, "Вернуться в предыдущее меню", null),
-				CMD_EXIT, new MenuItem(99, "Завершить работу", null)));
-
 		if (arg instanceof AnimalsHelper.TypeRef typeRef) {
-
 			// 2nd LEVEL: select animal kind
-
-			AtomicInteger menuKey = new AtomicInteger(1);
-			AnimalsHelper.animalKinds.stream()
-					.filter(k -> typeRef.cls().isAssignableFrom(k.cls()))
-					.forEach(kindRef -> {
-						menuItems.put(
-								Set.of(menuKey.toString()),
-								new MenuItem(menuKey.get(), kindRef.description(),
-										t -> addAnimalLifecycle(kindRef)));
-						menuKey.incrementAndGet();
-					});
-			Menu addAnimalSelectKindMenu = new Menu("Завести новое " + typeRef.description(), menuItems);
-			return menuLifecycle(addAnimalSelectKindMenu);
+			return addAnimalChooseKind(typeRef);
 		}
 
 		// 1st - TOP LEVEL: select animal type
+		return addAnimalChooseType();
+	}
 
+	private static HashMap<Set<String>, MenuItem> getMenuItemsBlank() {
+		return new HashMap<>(Map.of(
+				Set.of(" "), new MenuItem(90, null, null),
+				CMD_GO_BACK, new MenuItem(91, "Вернуться в главное меню", null),
+				CMD_EXIT, new MenuItem(99, "Завершить работу", null)));
+	}
+
+	private ReturnStatus addAnimalChooseType() {
+
+		var menuItems = getMenuItemsBlank();
 		AtomicInteger menuKey = new AtomicInteger(1);
 		AnimalsHelper.animalTypes.stream().forEach(typeRef -> {
 			menuItems.put(
@@ -280,7 +248,54 @@ public class Controller {
 			menuKey.incrementAndGet();
 		});
 		Menu addAnimalSelectTypeMenu = new Menu("Завести новое животное", menuItems);
-		return menuLifecycle(addAnimalSelectTypeMenu);
+		return menuLifecycle(addAnimalSelectTypeMenu, true, true);
+	}
+
+	private ReturnStatus addAnimalChooseKind(AnimalsHelper.TypeRef typeRef) {
+
+		var menuItems = getMenuItemsBlank();
+		AtomicInteger menuKey = new AtomicInteger(1);
+		AnimalsHelper.animalKinds.stream()
+				.filter(k -> typeRef.cls().isAssignableFrom(k.cls()))
+				.forEach(kindRef -> {
+					menuItems.put(
+							Set.of(menuKey.toString()),
+							new MenuItem(menuKey.get(), kindRef.description(),
+									t -> addAnimalLifecycle(kindRef)));
+					menuKey.incrementAndGet();
+				});
+		Menu addAnimalSelectKindMenu = new Menu("Завести новое " + typeRef.description(), menuItems);
+		return menuLifecycle(addAnimalSelectKindMenu, true, true);
+	}
+
+	private ReturnStatus addAnimalCreateAndAdd(AnimalsHelper.KindRef kindRef) {
+
+		view.clear();
+		view.show("Завести новое животное: " + kindRef.description());
+		view.show(ViewModelBase.emptySpace(1));
+
+		Optional<Animal> animalOpt = createAnimal(kindRef);
+
+		final String somethingWrong = "Что-то пошло не так. Не удалось добавить животное.";
+		if (animalOpt == null) {
+			view.show(somethingWrong);
+		} else if (animalOpt.isEmpty()) {
+			view.show("Добавление отменено.");
+		} else {
+			var repo = manager.animalsRepository();
+			var repoRecord = repo.add(animalOpt.get());
+			if (repoRecord == null) {
+				view.show(somethingWrong);
+			} else {
+				view.show("Успешно добавлено новое животное:");
+				view.show(ViewModelBase.emptySpace(2));
+				view.show(ViewModelBase.of(repoRecord, false));
+			}
+		}
+		view.show(ViewModelBase.emptySpace(1));
+		view.show(SHORT_HR);
+		view.waitToProceed();
+		return new ReturnStatus(false);
 	}
 
 	private Optional<Animal> createAnimal(AnimalsHelper.KindRef kindRef) {
@@ -384,7 +399,6 @@ public class Controller {
 				return rs;
 			}
 			var simulationString = simulationStringOpt.get();
-			simulationString.replace(nameSubstitute, animal.getName());
 
 			var command = new Command() {
 
@@ -395,7 +409,7 @@ public class Controller {
 
 				@Override
 				public void execute() {
-					view.show(simulationString);
+					view.show(simulationString.replace(nameSubstitute, animal.getName()));
 					view.show(ViewModelBase.emptySpace(1));
 				}
 
@@ -424,4 +438,58 @@ public class Controller {
 
 		return rs;
 	}
+
+	private ReturnStatus executeCommand(Object arg) {
+
+		view.clear();
+		view.show("Дать команду животному\n(имитация исполнения команды)");
+		view.show(ViewModelBase.emptySpace(2));
+		final String cancelled = "Галя, у нас отмена! ";
+
+		if (arg instanceof RepositoryRecord repoRecord
+				&& repoRecord.entity() instanceof Animal animal) {
+
+			view.show(ViewModelBase.of(new RepositoryRecord<Animal>(repoRecord.id(), animal), true));
+			view.show(ViewModelBase.emptySpace(1));
+
+			var commands = animal.getCommands();
+			if (commands.isEmpty()) {
+				view.show("Животное не знает никаких команд.");
+				view.show(ViewModelBase.emptySpace(2));
+				view.waitToProceed();
+				return new ReturnStatus(false);
+			}
+
+			var menuItems = getMenuItemsBlank();
+			AtomicInteger menuKey = new AtomicInteger(1);
+			commands.stream().forEach(cmd -> {
+				menuItems.put(
+						Set.of(menuKey.toString()),
+						new MenuItem(menuKey.get(),
+								cmd.description(),
+								nothing -> {
+									view.show("Результат выполнения команды:\n");
+									cmd.execute();
+									view.show(ViewModelBase.emptySpace(1));
+									view.waitToProceed();
+									return new ReturnStatus(false);
+								}));
+				menuKey.incrementAndGet();
+			});
+			Menu chooseCommandMenu = new Menu("Выберите команду", menuItems);
+			return menuLifecycle(chooseCommandMenu, false, false);
+
+		} else {
+
+			var animalRecord = askAnimalById("Введите ID животного (или пустой Ввод чтобы отменить): ");
+			view.show(ViewModelBase.emptySpace(1));
+			if (animalRecord == null) {
+				view.show(cancelled);
+				view.waitToProceed();
+				return new ReturnStatus(false);
+			}
+			return executeCommand(animalRecord);
+		}
+	}
+
 }

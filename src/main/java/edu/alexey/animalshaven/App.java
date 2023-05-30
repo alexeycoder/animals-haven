@@ -11,19 +11,19 @@ public class App {
 	public static void main(String[] args) {
 		Locale.setDefault(AppSettings.LOCALE);
 
-		// interfaces: DbContext -> DataManager, View
-		View view = new ConsoleView();
+		View view;
 		AnimalsManager manager;
 
 		try {
+			view = new ConsoleView();
 			manager = new AnimalsManager();
+			manager.FillWithData();
 
 		} catch (Exception e) {
-			view.show(
-					"Произошла непредвиденная ошибка во время инициализации базы данных. Приложение будет закрыто.\n");
-			view.show("Подробности об ошибке:\n");
-			view.show(e.getLocalizedMessage());
-			view.show(System.lineSeparator());
+			System.err.println(
+					"Произошла непредвиденная ошибка во время инициализации приложения. Приложение будет закрыто.");
+			System.err.println(e.getLocalizedMessage());
+			e.printStackTrace(System.err);
 			return;
 		}
 
@@ -31,12 +31,10 @@ public class App {
 			Controller.createAndRun(manager, view);
 
 		} catch (Exception e) {
-			view.show("Произошла непредвиденная ошибка во время работы приложения. Приложение будет закрыто.\n");
-			view.show("Подробности об ошибке:\n");
-			view.show(e.getLocalizedMessage());
-			view.show(e.getMessage());
-			e.printStackTrace();
-			view.show(System.lineSeparator());
+			System.err
+					.println("Произошла непредвиденная ошибка во время работы приложения. Приложение будет закрыто.\n");
+			System.err.println(e.getLocalizedMessage());
+			e.printStackTrace(System.err);
 		}
 	}
 }

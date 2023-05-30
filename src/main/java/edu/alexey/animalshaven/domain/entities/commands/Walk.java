@@ -8,7 +8,7 @@ public class Walk extends CommandBase {
 	public Walk(PetAnimal petAnimal) {
 		super(() -> {
 			if (petAnimal.hasOwner()){
-				System.out.printf("%s: гуляет с хозяином %s.\n", petAnimal.getName(), petAnimal.getOwner());
+				System.out.printf("%s: гуляет с хозяином/хозяйкой %s.\n", petAnimal.getName(), petAnimal.getOwner());
 			} else {
 				System.out.printf("%s: слоняется по улицам.\n", petAnimal.getName());
 			}
