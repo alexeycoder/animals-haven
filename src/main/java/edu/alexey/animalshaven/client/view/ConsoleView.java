@@ -1,5 +1,7 @@
 package edu.alexey.animalshaven.client.view;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -25,6 +27,9 @@ public class ConsoleView implements View {
 			+ PLEASE_REPEAT;
 	private static final String ERR_INT_TOO_LOW = "Число не должно быть меньше %d! " + PLEASE_REPEAT;
 	private static final String ERR_INT_TOO_HIGH = "Число не должно быть больше %d! " + PLEASE_REPEAT;
+
+	private static final String ERR_WRONG_DATE_FORMAT = "Некорректный ввод: не соответствует формату YYYY-MM-DD! "
+			+ PLEASE_REPEAT;
 
 	@Override
 	public void clear() {
@@ -206,6 +211,26 @@ public class ConsoleView implements View {
 			return Optional.<String>of(answer);
 		} else {
 			return Optional.<String>empty();
+		}
+	}
+
+	public Optional<LocalDate> askDate(String prompt) {
+
+		while (true) {
+			var strDate = askString(prompt,
+					s -> s.matches("^\\d{4}-\\d{2}-\\d{2}$"),
+					ERR_WRONG_DATE_FORMAT);
+
+			if (strDate.isEmpty()) {
+				return Optional.empty();
+			}
+			try {
+				LocalDate date = LocalDate.parse(strDate.get());
+				return Optional.of(date);
+				
+			} catch (DateTimeParseException e) {
+				printError(ERR_WRONG_DATE_FORMAT);
+			}
 		}
 	}
 

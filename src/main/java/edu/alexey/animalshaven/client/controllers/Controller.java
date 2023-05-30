@@ -2,8 +2,10 @@ package edu.alexey.animalshaven.client.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.alexey.animalshaven.client.helpers.AnimalsHelper;
 import edu.alexey.animalshaven.client.uielements.Menu;
@@ -12,7 +14,15 @@ import edu.alexey.animalshaven.client.view.View;
 import edu.alexey.animalshaven.client.viewmodels.ViewModelBase;
 import edu.alexey.animalshaven.domain.business.AnimalsManager;
 import edu.alexey.animalshaven.domain.business.RepositoryRecord;
+import edu.alexey.animalshaven.domain.entities.animals.Camel;
+import edu.alexey.animalshaven.domain.entities.animals.Cat;
+import edu.alexey.animalshaven.domain.entities.animals.Dog;
+import edu.alexey.animalshaven.domain.entities.animals.Hamster;
+import edu.alexey.animalshaven.domain.entities.animals.Horse;
+import edu.alexey.animalshaven.domain.entities.animals.Mule;
 import edu.alexey.animalshaven.domain.entities.animals.abstractions.Animal;
+import edu.alexey.animalshaven.domain.entities.animals.abstractions.PackAnimal;
+import edu.alexey.animalshaven.domain.entities.animals.abstractions.PetAnimal;
 
 public class Controller {
 	// inner types
@@ -207,31 +217,124 @@ public class Controller {
 				CMD_GO_BACK, new MenuItem(91, "Вернуться в предыдущее меню", null),
 				CMD_EXIT, new MenuItem(99, "Завершить работу", null)));
 
+		// 2nd LEVEL: select animal kind
 		if (arg instanceof AnimalsHelper.TypeId animalTypeId) {
-
-			view.show("\nВыбрано\n");
-			view.show(animalTypeId.description());
-			view.waitToProceed();
-
-			return new ReturnStatus(false);
+			AtomicInteger menuKey = new AtomicInteger(1);
+			AnimalsHelper.animalKinds.stream()
+					.filter(k -> animalTypeId.cls().isAssignableFrom(k.cls()))
+					.forEach(animalKindId -> {
+						menuItems.put(
+								Set.of(menuKey.toString()),
+								new MenuItem(menuKey.get(), animalKindId.description(),
+										t -> addAnimalLifecycle(animalKindId)));
+						menuKey.incrementAndGet();
+					});
+			Menu addAnimalSelectKindMenu = new Menu("Завести новое " + animalTypeId.description(), menuItems);
+			return menuLifecycle(addAnimalSelectKindMenu);
 		}
 
+		// 3rd LEVEL - create selected animal
 		if (arg instanceof AnimalsHelper.KindId animalKindId) {
 
-			view.show("\nВыбрано\n");
-			view.show(animalKindId.description());
-			view.waitToProceed();
+			view.clear();
+			view.show("Завести новое животное: " + animalKindId.description());
+			view.show(ViewModelBase.emptySpace(1));
 
+			Optional<Animal> animalOpt = createAnimal(animalKindId);
+
+			final String somethingWrong = "Что-то пошло не так. Не удалось добавить животное.";
+			if (animalOpt == null) {
+				view.show(somethingWrong);
+			} else if (animalOpt.isEmpty()) {
+				view.show("Добавление отменено.");
+			} else {
+				var repo = manager.animalsRepository();
+				var repoRecord = repo.add(animalOpt.get());
+				if (repoRecord == null) {
+					view.show(somethingWrong);
+				} else {
+					view.show("Успешно добавлено новое животное:");
+					view.show(ViewModelBase.emptySpace(2));
+					view.show(ViewModelBase.of(repoRecord, false));
+				}
+			}
+			view.show(ViewModelBase.emptySpace(1));
+			view.show(SHORT_HR);
+			view.waitToProceed();
 			return new ReturnStatus(false);
 		}
 
-		// TOP LEVEL
+		// 1st - TOP LEVEL: select animal type
+		AtomicInteger menuKey = new AtomicInteger(1);
 		AnimalsHelper.animalTypes.stream().forEach(animalTypeId -> {
 			menuItems.put(
-					Set.of(Integer.toString(animalTypeId.id())),
-					new MenuItem(animalTypeId.id(), animalTypeId.description(), t -> addAnimalLifecycle(animalTypeId)));
+					Set.of(menuKey.toString()),
+					new MenuItem(menuKey.get(), animalTypeId.description(), t -> addAnimalLifecycle(animalTypeId)));
+			menuKey.incrementAndGet();
 		});
 		Menu addAnimalSelectTypeMenu = new Menu("Завести новое животное", menuItems);
 		return menuLifecycle(addAnimalSelectTypeMenu);
+	}
+
+	private Optional<Animal> createAnimal(AnimalsHelper.KindId animalKindId) {
+		assert animalKindId != null : "animalKindId is null";
+
+		var nameOpt = view.askString(
+				"Введите кличку (пустой Ввод для отмены):\n",
+				null, null);
+		if (nameOpt.isEmpty()) {
+			return Optional.empty();
+		}
+
+		var birthDateOpt = view.askDate("Введите дату рождения в формате YYYY-MM-DD (пустой Ввод чтобы отменить): ");
+		if (birthDateOpt.isEmpty()) {
+			return Optional.empty();
+		}
+
+		var kindCls = animalKindId.cls();
+
+		if (PetAnimal.class.isAssignableFrom(kindCls)) {
+
+			Optional<String> ownerOpt;
+			if (view.askYesNo("У питомца есть владелец (Д/н) (Y/n)? ", true)) {
+				ownerOpt = view.askString("Введите имя владельца (пустой Ввод для отмены):\n",
+						null, null);
+				if (nameOpt.isEmpty()) {
+					return Optional.empty();
+				}
+			} else {
+				ownerOpt = Optional.empty();
+			}
+
+			if (kindCls.equals(Cat.class)) {
+				return Optional.of(new Cat(birthDateOpt.get(), nameOpt.get(), ownerOpt.orElse(null)));
+			}
+			if (kindCls.equals(Dog.class)) {
+				return Optional.of(new Dog(birthDateOpt.get(), nameOpt.get(), ownerOpt.orElse(null)));
+			}
+			if (kindCls.equals(Hamster.class)) {
+				return Optional.of(new Hamster(birthDateOpt.get(), nameOpt.get(), ownerOpt.orElse(null)));
+			}
+
+		} else if (PackAnimal.class.isAssignableFrom(kindCls)) {
+
+			var loadCapOpt = view.askInteger("Введите грузоподъёмность, кг. (пустой Ввод для отмены):\n",
+					0, null);
+			if (loadCapOpt.isEmpty()) {
+				return Optional.empty();
+			}
+
+			if (kindCls.equals(Camel.class)) {
+				return Optional.of(new Camel(birthDateOpt.get(), nameOpt.get(), loadCapOpt.getAsInt()));
+			}
+			if (kindCls.equals(Horse.class)) {
+				return Optional.of(new Horse(birthDateOpt.get(), nameOpt.get(), loadCapOpt.getAsInt()));
+			}
+			if (kindCls.equals(Mule.class)) {
+				return Optional.of(new Mule(birthDateOpt.get(), nameOpt.get(), loadCapOpt.getAsInt()));
+			}
+		}
+
+		return null;
 	}
 }

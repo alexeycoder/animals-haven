@@ -1,5 +1,6 @@
 package edu.alexey.animalshaven.client.view;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -40,4 +41,6 @@ public interface View {
 	OptionalInt askInteger(String prompt, Function<Integer, Boolean> checkValidity, String wrongWarn);
 
 	Optional<String> askString(String prompt, Function<String, Boolean> checkValidity, String wrongWarn);
+
+	Optional<LocalDate> askDate(String prompt);
 }

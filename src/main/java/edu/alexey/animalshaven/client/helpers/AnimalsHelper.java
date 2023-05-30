@@ -1,10 +1,7 @@
 package edu.alexey.animalshaven.client.helpers;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.Map.Entry;
-
 import edu.alexey.animalshaven.domain.entities.animals.Camel;
 import edu.alexey.animalshaven.domain.entities.animals.Cat;
 import edu.alexey.animalshaven.domain.entities.animals.Dog;
@@ -17,23 +14,23 @@ import edu.alexey.animalshaven.domain.entities.animals.abstractions.PetAnimal;
 
 public class AnimalsHelper {
 
-	public static record KindId(int id, String description, Class<? extends Animal> cls) {
+	public static record KindId(/*int id,*/ String description, Class<? extends Animal> cls) {
 	}
 
-	public static record TypeId(int id, String description, Class<? extends Animal> cls) {
+	public static record TypeId(/*int id,*/ String description, Class<? extends Animal> cls) {
 	}
 
 	public static Set<TypeId> animalTypes = Set.of(
-			new TypeId(1, "Домашнее животное", PetAnimal.class),
-			new TypeId(2, "Вьючное животное", PackAnimal.class));
+			new TypeId(/*1,*/ "Домашнее животное", PetAnimal.class),
+			new TypeId(/*2,*/ "Вьючное животное", PackAnimal.class));
 
 	public static Set<KindId> animalKinds = Set.of(
-			new KindId(1, "Кошка", Cat.class),
-			new KindId(2, "Собака", Dog.class),
-			new KindId(3, "Хомяк", Hamster.class),
-			new KindId(4, "Верблюд", Camel.class),
-			new KindId(5, "Лошадь", Horse.class),
-			new KindId(6, "Осёл", Mule.class));
+			new KindId(/*1,*/ "Кошка", Cat.class),
+			new KindId(/*2,*/ "Собака", Dog.class),
+			new KindId(/*3,*/ "Хомяк", Hamster.class),
+			new KindId(/*4,*/ "Верблюд", Camel.class),
+			new KindId(/*5,*/ "Лошадь", Horse.class),
+			new KindId(/*6,*/ "Осёл", Mule.class));
 
 	// public static TypeId getAnimalType(Class<? extends Animal> cls) {
 	// 	Objects.requireNonNull(cls);
