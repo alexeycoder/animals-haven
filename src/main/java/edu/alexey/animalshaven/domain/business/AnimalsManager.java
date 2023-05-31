@@ -31,7 +31,7 @@ public class AnimalsManager {
 	public void FillWithData() {
 		
 		animalsRepository.add(new Cat(LocalDate.of(2020, 9, 2), "Анфиса", "Виолетта Михайловна"));
-		animalsRepository.add(new Cat(LocalDate.of(2022, 1, 16), "Мурка", ""));
+		animalsRepository.add(new Cat(LocalDate.of(2022, 1, 16), "Мурка", "Юрий Дмитриевич"));
 		animalsRepository.add(new Dog(LocalDate.of(2019, 10, 15), "Барбос", null));
 		animalsRepository.add(new Dog(LocalDate.of(2015, 8, 15), "Рекс", "Рихард Мозер"));
 		animalsRepository.add(new Hamster(LocalDate.of(2019, 8, 20), "Жужжа", "Василий Хомяков"));

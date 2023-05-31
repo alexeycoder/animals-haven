@@ -5,14 +5,14 @@ import edu.alexey.animalshaven.domain.entities.commands.Walk;
 
 public abstract class PetAnimal extends Animal {
 
+	private String owner;
+
 	protected PetAnimal(LocalDate birthDate, String name, String owner) {
 		super(birthDate, name);
 		this.owner = owner;
 
 		this.commands.add(new Walk(this));
 	}
-
-	private String owner;
 
 	public String getOwner() {
 		return owner;

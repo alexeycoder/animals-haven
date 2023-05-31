@@ -1,15 +1,11 @@
 package edu.alexey.animalshaven.domain.business;
 
 import java.security.InvalidParameterException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-import edu.alexey.animalshaven.domain.entities.animals.Cat;
-import edu.alexey.animalshaven.domain.entities.animals.Dog;
-import edu.alexey.animalshaven.domain.entities.animals.Mule;
 import edu.alexey.animalshaven.domain.entities.animals.abstractions.Animal;
 
 public class AnimalsRepositoryImpl implements Repository<Animal> {
@@ -74,7 +70,4 @@ public class AnimalsRepositoryImpl implements Repository<Animal> {
 		return IntStream.range(BASE_ID, lastId() + 1)
 				.mapToObj(id -> new RepositoryRecord<Animal>(id, list.get(toIndex(id)))).toList();
 	}
-
-	
-
 }
