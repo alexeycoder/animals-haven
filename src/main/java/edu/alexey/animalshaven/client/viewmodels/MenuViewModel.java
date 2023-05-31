@@ -11,17 +11,32 @@ import edu.alexey.utils.StringUtils;
 
 public class MenuViewModel extends ViewModelBase {
 
-	private static final String FRAME_H = "\u2501";
-	private static final String FRAME_V = "\u2502";
-	private static final String FRAME_TOP_L = "\u250d";
-	private static final String FRAME_TOP_R = "\u2511";
-	private static final String FRAME_BTM_L = "\u2515";
-	private static final String FRAME_BTM_R = "\u2519";
-	private static final String FRAME_MID_L = "\u251c";
-	private static final String FRAME_MID_R = "\u2524";
-	private static final String FRAME_MID_H = "\u2500";
-	private static final String SEP = "\u25b8";
+	// v2: compatible with CP1251
+
+	private static final String FRAME_H = "=";
+	private static final String FRAME_V = "|";
+	private static final String FRAME_TOP_L = "+";
+	private static final String FRAME_TOP_R = "+";
+	private static final String FRAME_BTM_L = "+";
+	private static final String FRAME_BTM_R = "+";
+	private static final String FRAME_MID_L = "+";
+	private static final String FRAME_MID_R = "+";
+	private static final String FRAME_MID_H = "-";
+	private static final String SEP = ">";
 	private static final String PADDING = " ";
+
+	// v1: unicode-based -- incompatible with [Win console + Java]
+
+	// private static final String FRAME_H = "\u2501";
+	// private static final String FRAME_V = "\u2502";
+	// private static final String FRAME_TOP_L = "\u250d";
+	// private static final String FRAME_TOP_R = "\u2511";
+	// private static final String FRAME_BTM_L = "\u2515";
+	// private static final String FRAME_BTM_R = "\u2519";
+	// private static final String FRAME_MID_L = "\u251c";
+	// private static final String FRAME_MID_R = "\u2524";
+	// private static final String FRAME_MID_H = "\u2500";
+	// private static final String SEP = "\u25b8";
 
 	private final String strRepr;
 
