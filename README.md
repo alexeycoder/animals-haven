@@ -9,8 +9,9 @@
 * Обучить животное новым командам
 * Реализовать навигацию по меню
 
-### Часть по Linux &mdash [final_exam_work.pdf](linux_part/final_exam_work.pdf)
-### Часть по MySQL &mdash [myscript.sql](sql_part/myscript.sql)
+### Часть по Linux &mdash; [final_exam_work.pdf](linux_part/final_exam_work.pdf)
+### Часть по MySQL &mdash; [myscript.sql](sql_part/myscript.sql)
+### Класс CrazyCounter для пункта 15 &mdash; [CrazyCounter.java](src/main/java/edu/alexey/animalshaven/domain/business/CrazyCounter.java)
 
 ## Демонстрация работы приложения
 
