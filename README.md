@@ -16,40 +16,40 @@
 
 ### Главное меню
 
-![01-main-menu](https://github.com/alexeycoder/animals-haven/assets/109767480/86c0995c-728b-4f79-8e17-2029ef270b11)
+![01-main-menu](https://github.com/alexeycoder/animals-haven/assets/109767480/05e5b95f-3501-40a3-8a8f-30da827d7b5c)
 
 ### Список животных
 
-![02-list_001](https://github.com/alexeycoder/animals-haven/assets/109767480/bd870651-b121-4ffe-bc9d-760d1354863e)
+![02-list_001](https://github.com/alexeycoder/animals-haven/assets/109767480/18280189-2f28-4e7f-b8d7-ba1d9fb48113)
 
 ### Поиск по кличке и вывод данных о животном
 
-![03-search-by-name_001](https://github.com/alexeycoder/animals-haven/assets/109767480/a8d0eefd-6852-46f7-a03c-54d143cb893e)
+![03-search-by-name_001](https://github.com/alexeycoder/animals-haven/assets/109767480/da790802-7492-41f8-8294-9cf6a910f0ad)
 
 ### Добавление вьючного животного
 
-![04-add-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/e5d3e79c-be19-4b2d-9262-5c695f0fd708)
+![04-add-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/915bbb41-2fc5-494e-ab1f-c822d273dc9a)
 
-![05-add-pack-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/336282d5-cba1-41a9-b03b-6ead699be4d5)
+![05-add-pack-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/c4622cb3-f4f3-496b-aeb3-f016eb08bc12)
 
-![06-add-concrete-animal_001](https://github.com/alexeycoder/animals-haven/assets/109767480/a901e4f2-031f-437f-aefe-8ae8d1f8e124)
+![06-add-concrete-animal_001](https://github.com/alexeycoder/animals-haven/assets/109767480/6dceeef8-51ff-46db-905a-f5389b39ae2a)
 
 ### Результат добавления
 
-![07-add-result_001](https://github.com/alexeycoder/animals-haven/assets/109767480/f08c22c7-8743-4e17-b23b-f99393d3abe9)
+![07-add-result_001](https://github.com/alexeycoder/animals-haven/assets/109767480/53316a3e-1af9-485c-81b7-46d60d6cdb81)
 
 ### Пример меню добавления домашнего животного
 
-![08-menu-add-pet-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/01b103f7-d4a7-49f5-8da1-c0e9a8315186)
+![08-menu-add-pet-animal](https://github.com/alexeycoder/animals-haven/assets/109767480/21f9ab2e-b516-4bf9-b23f-4f20fdadfcff)
 
 ### Обучение новой команде
 
-![09-teach_command_001](https://github.com/alexeycoder/animals-haven/assets/109767480/13d97a88-6974-475e-98fe-219db2fc0f22)
+![09-teach_command_001](https://github.com/alexeycoder/animals-haven/assets/109767480/371e7de6-f5f3-437c-b4de-649984db5f30)
 
 ### Имитация выполнения новой команды
 
-![10-execute-command_001](https://github.com/alexeycoder/animals-haven/assets/109767480/4664e5aa-c1c1-4a33-a247-f7da25f341cc)
+![10-execute-command_001](https://github.com/alexeycoder/animals-haven/assets/109767480/58e4df05-daae-48b2-8766-d0a60e7055a1)
 
 ## Структура проекта
 
-![prj-stuct](https://github.com/alexeycoder/animals-haven/assets/109767480/e1746870-4f81-47f1-b8db-2bed7b726fc3)
+![prj-stuct](https://github.com/alexeycoder/animals-haven/assets/109767480/b3638fa9-43be-41d2-a847-82af03e27bdf)
